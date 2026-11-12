@@ -1,0 +1,46 @@
+﻿@page "/photo/{id}"
+
+@if (isErreur)
+{
+    <div class="d-flex align-items-center justify-content-center">
+        <h1>Photo introuvable</h1>
+    </div>
+}
+else if (_photo is null)
+{
+    <div class="d-flex align-items-center justify-content-center">
+        <h1>Chargement....</h1>
+    </div>
+}
+else
+{
+    <Card Photo="_photo" />
+}
+
+
+@code {
+
+    [Parameter]
+    public string Id { get; set; }
+
+    [Inject]
+    public IPhotoService PhotoService { get; set; } = default;
+
+    private Photo? _photo;
+    private bool isErreur = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var photo = await PhotoService.GetPhotoByIdAsync(Id);
+
+        if (photo is null)
+        {
+            isErreur = true;
+        }
+        else
+        {
+            _photo = photo;
+        }
+    }
+
+}

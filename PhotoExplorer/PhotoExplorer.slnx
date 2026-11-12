@@ -1,0 +1,16 @@
+<Solution>
+  <Folder Name="/api/">
+    <Project Path="../api/PhotoExplorer.Api.csproj" />
+  </Folder>
+  <Folder Name="/libs/">
+    <Project Path="../libs/PhotoExplorer.Componenet/PhotoExplorer.Componenet.csproj" Id="0f02a2dd-b88a-4e9d-b89a-e56891f897bb" />
+    <Project Path="../libs/PhotoExplorer.Shared/PhotoExplorer.Shared.csproj" Id="5e459e0a-723e-4b80-92c5-d1e7bdf084bf" />
+  </Folder>
+  <Folder Name="/ui/">
+    <Project Path="../ui/PhotoExplorer.Explorer/PhotoExplorer.Explorer.csproj" Id="0fb8a6c5-0113-4d34-9c9e-33090f9c186a" />
+    <Project Path="../ui/PhotoExplorer.Manager/PhotoExplorer.Manager.csproj" />
+    <Project Path="../ui/PhotoExplorer.Mobile/PhotoExplorer.Mobile.csproj" Id="4c279497-dc57-4993-a42e-175f7e34466c">
+      <Deploy Solution="Debug|*" />
+    </Project>
+  </Folder>
+</Solution>

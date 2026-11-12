@@ -1,0 +1,30 @@
+﻿
+<div class="col m-2 clickable" @onclick="()=>ShowDetails(Photo.Id)">
+    <div class="card shadow" style="width: 18rem;">
+        <img src="http://localhost:5205/photos/@Photo.Path" class="card-img-top" alt="@Photo.Description">
+        <div class="card-body">
+            <h5 class="card-title">@Photo.Description</h5>
+            <p class="card-text">
+                @Photo.Author
+            </p>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Photo Photo { get; set; } = default;
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; } = default;
+
+    private void ShowDetails(string id)
+    {
+        if (NavigationManager.GetType().AssemblyQualifiedName!.Contains("WebAssembly", StringComparison.OrdinalIgnoreCase))
+        {
+            NavigationManager.NavigateTo($"/photo/{id}");
+        }
+        
+    
+    }
+}

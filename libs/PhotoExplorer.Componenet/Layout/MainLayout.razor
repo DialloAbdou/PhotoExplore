@@ -1,0 +1,35 @@
+﻿@inherits LayoutComponentBase
+
+<nav class="navbar mb-5 shadow">
+    <div class="row">
+        <a class="navbar-brand" href="/">
+            <img src="_content/PhotoExplorer.Componenet/images/logo.png" height="120">
+            <span class="app-title">
+              Photo @_CurrentTitle
+            </span>
+        </a>
+    </div>
+</nav>
+
+<main class="container mt-5 mb-5">
+    @Body
+</main>
+
+
+@code
+{
+    [Inject] public NavigationManager NavigationManager { get; set; } = default!;
+    private string _CurrentTitle = string.Empty;
+    protected override void OnInitialized()
+    {
+        
+        _CurrentTitle = NavigationManager.GetType().AssemblyQualifiedName switch
+        {
+            string s when s.Contains("Server", StringComparison.OrdinalIgnoreCase) => "Manager",
+            string s when s.Contains("WebAssembly", StringComparison.OrdinalIgnoreCase) => "Explorer",
+            _ => "Mobile"
+        };
+
+    }
+
+}

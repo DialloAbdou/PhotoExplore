@@ -1,0 +1,43 @@
+﻿@using PhotoExplorer.Explorer.Models
+<h3>Formulaire</h3>
+<form method="post" @formname="formulaire_infos" onsubmit="">
+
+
+    <input type="text" name="nom" placeholder="nom" @bind-value="Model!.Nom" />
+    <input type="text" name="prenom" placeholder="Prenom" @bind-value="Model!.Prenom" />
+    <button type="submit">Envoyer</button>
+</form>
+
+<p>
+    @if (Model != null)
+    {
+        <span>Nom: @Model.Nom, Prénom: @Model.Prenom</span>
+    }   
+        
+</p>
+
+@code {
+
+    [SupplyParameterFromForm(FormName = "formulaire_infos")]
+    public Personne? Model { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Model ??= new Personne();
+    }
+
+    public void OnSubmit()
+    {
+        // Logique de traitement du formulaire
+        if (Model != null)
+        {
+           
+        }
+        else
+        {
+            Console.WriteLine("Le modèle est null.");
+        }
+
+       
+    }
+}

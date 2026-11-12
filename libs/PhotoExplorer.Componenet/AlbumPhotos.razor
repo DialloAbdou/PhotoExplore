@@ -1,0 +1,48 @@
+﻿
+<div class="container">
+    @if (_photos is null)
+    {
+        <div class="d-flex align-items-center justify-content-center">
+            <h1>Chargement....</h1>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            
+            @if (_photos.Count() == 0)
+            {
+                <div class="d-flex align-items-center justify-content-center">
+                    <h1>Aucune photo disponible</h1>
+                </div>
+            }
+            else
+            {
+                @foreach (var photo in _photos)
+                {
+
+                    <Card Photo="photo" />
+                }
+            }
+        </div>
+
+    }
+</div>
+@code {
+
+    private IEnumerable<Photo>? _photos;
+
+    [Inject] public IPhotoService PhotoService { get; set; } = default;
+
+    override protected async Task OnInitializedAsync()
+    {
+        var photos = await PhotoService.GetAllPhotosAsync();
+        if (photos is not null)
+        {
+            _photos = photos;
+        }else
+        {
+            _photos = new List<Photo>();
+        }
+    }
+}
