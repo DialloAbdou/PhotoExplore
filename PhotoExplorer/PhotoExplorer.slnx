@@ -1,6 +1,6 @@
 <Solution>
   <Folder Name="/api/">
-    <Project Path="../api/PhotoExplorer.Api.csproj" />
+    <Project Path="../api/mod2-tp-api-sources/PhotoExplorer.Api.csproj" />
   </Folder>
   <Folder Name="/libs/">
     <Project Path="../libs/PhotoExplorer.Componenet/PhotoExplorer.Componenet.csproj" Id="0f02a2dd-b88a-4e9d-b89a-e56891f897bb" />

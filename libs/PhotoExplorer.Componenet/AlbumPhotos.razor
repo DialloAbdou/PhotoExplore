@@ -1,4 +1,5 @@
-﻿
+﻿@using Microsoft.AspNetCore.Components.Forms
+
 <div class="container">
     @if (_photos is null)
     {
@@ -9,7 +10,7 @@
     else
     {
         <div class="row">
-            
+
             @if (_photos.Count() == 0)
             {
                 <div class="d-flex align-items-center justify-content-center">
@@ -18,6 +19,64 @@
             }
             else
             {
+                if (TypeProjet == "Mobile")
+                {
+                    <div class="card">
+                        <div class="card-body">
+                            <button type="button" class="btn btn-warning">Ajouter une photo</button>
+                        </div>
+                    </div>
+                }
+                else
+                {
+
+                    <div class="">
+                        <div class="card shadow">
+                            <div class="card-body">
+                                <form>
+                                    <div class="d-flex align-items-center gap-2">
+                                        @if (TypeProjet == "Explorer")
+                                        {
+                                            <div class="col-3">
+                                                <!-- INPUT TEXT RECHERCHE -->
+                                                <input type="text" class="form-control col-md-5"
+                                                         placeholder="Rechercher une photo..."
+                                                         @bind="newPhotoUrl" @bind:event="oninput"/>
+                                            </div>
+
+                                        }
+                                        else if (TypeProjet == "Manager") 
+                                        {
+                                            <div class="col-3">
+                                                <!-- INPUT TEXT RECHERCHE -->
+                                                <input type="text" class="form-control col-md-5"
+                                                       placeholder="Rechercher une photo..."
+                                                       @bind="newPhotoUrl" @bind:event="oninput" />
+                                            </div>
+
+                                            <div class="col-3">
+                                                <!-- INPUT SELECT -->
+                                                <select class="form-select ms-3" @bind="selectedPhotoStatus">
+                                                    <option value="">Toutes</option>
+                                                    <option value="publiee">Uniquement publiées</option>
+                                                    <option value="valier">Uniquement validées</option>
+                                                </select>
+                                            </div>
+
+                                        }
+                                        <div class="col-md-auto">
+                                            <button type="submit" class="btn btn-primary ms-3">Rechercher</button>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+
+
                 @foreach (var photo in _photos)
                 {
 
@@ -31,18 +90,46 @@
 @code {
 
     private IEnumerable<Photo>? _photos;
+    private string newPhotoUrl = string.Empty;
 
     [Inject] public IPhotoService PhotoService { get; set; } = default;
 
-    override protected async Task OnInitializedAsync()
+    [Inject] public NavigationManager NavigationManager { get; set; }
+    private string selectedPhotoStatus = string.Empty;
+
+    
+    public string TypeProjet { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
     {
+        TypeProjet = NavigationManager.GetType().AssemblyQualifiedName switch
+        {
+            string s when s.Contains("Server", StringComparison.OrdinalIgnoreCase) => "Manager",
+            string s when s.Contains("WebAssembly", StringComparison.OrdinalIgnoreCase) => "Explorer",
+            _ => "Mobile"
+        };
+
         var photos = await PhotoService.GetAllPhotosAsync();
         if (photos is not null)
         {
             _photos = photos;
-        }else
+        }
+        else
         {
             _photos = new List<Photo>();
+        }
+    }
+
+    private void OnSearch()
+    {
+        if (!string.IsNullOrEmpty(newPhotoUrl))
+        {
+            _photos = _photos?.Where(p => p.Author.Contains(newPhotoUrl, StringComparison.OrdinalIgnoreCase));
+        }
+        else
+        {
+            // If the search term is empty, reload all photos
+            _ = OnInitializedAsync();
         }
     }
 }

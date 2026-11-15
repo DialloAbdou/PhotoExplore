@@ -20,6 +20,7 @@
 {
     [Inject] public NavigationManager NavigationManager { get; set; } = default!;
     private string _CurrentTitle = string.Empty;
+
     protected override void OnInitialized()
     {
         
@@ -31,5 +32,7 @@
         };
 
     }
+
+
 
 }
